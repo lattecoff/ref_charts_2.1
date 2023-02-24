@@ -25,7 +25,7 @@ sf = []
 df_waittime = []
 sf_runtime = []
 
-with open('./logs/20230216.log', 'r') as csvfile:
+with open('./logs/serial_20230224_090019.txt', 'r') as csvfile:
     lines = csv.reader(csvfile, delimiter=';')
     for row in lines:
         #x.append(row[0])
@@ -44,6 +44,16 @@ with open('./logs/20230216.log', 'r') as csvfile:
         sf_runtime.append(int(row[19]) /60.0/60.0)
 
 print(df_waittime[960])
+
+cnt = 0
+for i in dumper:
+    i = i +8
+    if (i == 1):
+        cnt = cnt +1
+
+
+cnt = cnt /2    
+print("time open dumper: " + str(cnt))
 
 plt.axes().set_facecolor('#273746')
 #plt.plot(x, y, color='g', linestyle='dashed', label="Weather Data")
