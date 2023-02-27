@@ -22,10 +22,40 @@ heater = []
 
 sf = []
 
+df_vec = []
+
 df_waittime = []
 sf_runtime = []
 
-with open('./logs/serial_20230224_090019.txt', 'r') as csvfile:
+
+def calc_sumtime_open_dumper():
+    run_time = 0
+
+    for i in dumper:
+        i = i +8
+        
+        if (i == 1):
+            run_time = run_time +1
+
+
+    return (run_time /2)
+
+def calc_sumtime_run_compressor():
+    run_time = 0
+
+    for i in comp[6270:]:
+        i = i +4
+        
+        if (i == 1):
+            run_time = run_time +1
+
+
+    return (run_time /2)
+    
+
+#with open('./logs/serial_20230227_091232.txt', 'r') as csvfile:
+with open('./logs/serial_20230227_125501.txt', 'r') as csvfile:
+#with open('./logs/serial_20230227_153054.txt', 'r') as csvfile:
     lines = csv.reader(csvfile, delimiter=';')
     for row in lines:
         #x.append(row[0])
@@ -40,20 +70,18 @@ with open('./logs/serial_20230224_090019.txt', 'r') as csvfile:
 
         sf.append(int(row[12]) +10)
 
+        df_vec.append(int(row[14]) +30)
+
         df_waittime.append(int(row[16]) /60.0/60.0)
         sf_runtime.append(int(row[19]) /60.0/60.0)
 
-print(df_waittime[960])
-
-cnt = 0
-for i in dumper:
-    i = i +8
-    if (i == 1):
-        cnt = cnt +1
+#print(df_waittime[960])
 
 
-cnt = cnt /2    
-print("time open dumper: " + str(cnt))
+
+print("time open dumper: " + str(calc_sumtime_open_dumper()))
+print("time run compressor: " + str(calc_sumtime_run_compressor()))
+
 
 plt.axes().set_facecolor('#273746')
 #plt.plot(x, y, color='g', linestyle='dashed', label="Weather Data")
@@ -68,8 +96,12 @@ plt.plot(heater, color='#C0392B', linestyle='solid', label="H")
 
 plt.plot(sf, color='#3498DB', linestyle='solid', label="SF", linewidth=3)
 
+plt.plot(df_vec, color='#C0392B', linestyle='solid', label="DF Vector")
+
 plt.plot(df_waittime, color='#5DADE2', linestyle='solid', label="DF WaitTime")
 plt.plot(sf_runtime, color='#C39BD3', linestyle='solid', label="SF RunTime")
+
+
 
 #plt.xlabel('x')
 
