@@ -3,7 +3,7 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-
+from matplotlib.widgets import Cursor
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
@@ -31,7 +31,7 @@ sf_runtime = []
 def calc_sumtime_open_dumper():
     run_time = 0
 
-    for i in dumper:
+    for i in dumper[2597:3649]:
         i = i +8
         
         if (i == 1):
@@ -43,7 +43,7 @@ def calc_sumtime_open_dumper():
 def calc_sumtime_run_compressor():
     run_time = 0
 
-    for i in comp[6270:]:
+    for i in comp[2597:3649]:
         i = i +4
         
         if (i == 1):
@@ -51,11 +51,24 @@ def calc_sumtime_run_compressor():
 
 
     return (run_time /2)
-    
 
-#with open('./logs/serial_20230227_091232.txt', 'r') as csvfile:
-with open('./logs/serial_20230227_125501.txt', 'r') as csvfile:
+
+#with open('./logs/r509_comp_thaw.log', 'r') as csvfile:
+#with open('./logs/common_mode.log', 'r') as csvfile:
+#with open('./logs/run_comp_e2_error.log', 'r') as csvfile:
+#with open('./logs/run_comp_6h_test3.log', 'r') as csvfile:
+#with open('./logs/run_comp_6h_test2.log', 'r') as csvfile:
+#with open('./logs/run_comp_6h.log', 'r') as csvfile:
 #with open('./logs/serial_20230227_153054.txt', 'r') as csvfile:
+#with open('./logs/r509_normal_mode_2.log', 'r') as csvfile:
+#with open('./logs/r509_edefrost_2.log', 'r') as csvfile:
+#with open('./logs/r510_dumper_thaw.log', 'r') as csvfile:
+#with open('./logs/new_r510_normal_mode.log', 'r') as csvfile:
+#with open('./logs/46new/dumper_thaw.log', 'r') as csvfile:
+#with open('./logs/46new/r514_debug_restart.log', 'r') as csvfile:
+#with open('./logs/46new/r514_debug_restart_continue.log', 'r') as csvfile:
+#with open('./logs/46new/r514_normal_mode.log', 'r') as csvfile:
+with open('./logs/46new/r516_normal_mode_df1_16h.log', 'r') as csvfile:
     lines = csv.reader(csvfile, delimiter=';')
     for row in lines:
         #x.append(row[0])
@@ -113,6 +126,7 @@ plt.legend()
 
 plt.minorticks_on()
 plt.grid(which='minor', color='#808B96', linestyle='-', linewidth=0.5)
+
 
 plt.show()
 
