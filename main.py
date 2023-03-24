@@ -8,6 +8,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import csv
 
+y_shift_dumper = 10
+y_shift_fan = 6
+y_shift_comp = 4
+y_shift_heater = 2 
+y_shift_sf = 10
+y_shift_df_vec = 30
+
 x = []
 y = []
 
@@ -27,7 +34,7 @@ df_vec = []
 df_waittime = []
 sf_runtime = []
 
-
+''' Calculate dumper open time in frame. '''
 def calc_sumtime_open_dumper():
     run_time = 0
 
@@ -35,11 +42,12 @@ def calc_sumtime_open_dumper():
         i = i +8
         
         if (i == 1):
-            run_time = run_time +1
+            run_time = run_time + y_shift_dumper
 
 
     return (run_time /2)
 
+''' Calculate compressor run time in frame. '''
 def calc_sumtime_run_compressor():
     run_time = 0
 
@@ -47,12 +55,12 @@ def calc_sumtime_run_compressor():
         i = i +4
         
         if (i == 1):
-            run_time = run_time +1
+            run_time = run_time + y_shift_comp
 
 
     return (run_time /2)
 
-
+''' Parsing CSV-file. '''
 #with open('./logs/r509_comp_thaw.log', 'r') as csvfile:
 #with open('./logs/common_mode.log', 'r') as csvfile:
 #with open('./logs/run_comp_e2_error.log', 'r') as csvfile:
@@ -68,7 +76,9 @@ def calc_sumtime_run_compressor():
 #with open('./logs/46new/r514_debug_restart.log', 'r') as csvfile:
 #with open('./logs/46new/r514_debug_restart_continue.log', 'r') as csvfile:
 #with open('./logs/46new/r514_normal_mode.log', 'r') as csvfile:
-with open('./logs/46new/r516_normal_mode_df1_16h.log', 'r') as csvfile:
+#with open('./logs/46new/r516_normal_mode_df1_16h.log', 'r') as csvfile:
+#with open('./logs/46new/r516_sf.log', 'r') as csvfile:
+with open('./logs/46new/r519_normal_mode_wait_H_45min.log', 'r') as csvfile:
     lines = csv.reader(csvfile, delimiter=';')
     for row in lines:
         #x.append(row[0])
@@ -76,14 +86,14 @@ with open('./logs/46new/r516_normal_mode_df1_16h.log', 'r') as csvfile:
         tF.append(int(row[3]) /10)
         tE.append(int(row[4]) /10)
 
-        dumper.append(int(row[5]) -8)
-        fan.append(int(row[6]) -6)
-        comp.append(int(row[7]) -4)
-        heater.append(int(row[8]) -2)
+        dumper.append(int(row[5]) - y_shift_dumper)
+        fan.append(int(row[6]) - y_shift_fan)
+        comp.append(int(row[7]) - y_shift_comp)
+        heater.append(int(row[8]) - y_shift_heater)
 
-        sf.append(int(row[12]) +10)
+        sf.append(int(row[12]) + y_shift_sf)
 
-        df_vec.append(int(row[14]) +30)
+        df_vec.append(int(row[14]) + y_shift_df_vec)
 
         df_waittime.append(int(row[16]) /60.0/60.0)
         sf_runtime.append(int(row[19]) /60.0/60.0)
@@ -95,8 +105,10 @@ with open('./logs/46new/r516_normal_mode_df1_16h.log', 'r') as csvfile:
 print("time open dumper: " + str(calc_sumtime_open_dumper()))
 print("time run compressor: " + str(calc_sumtime_run_compressor()))
 
-
+''' Set backgrownd. '''
 plt.axes().set_facecolor('#273746')
+
+''' Draw charts. '''
 #plt.plot(x, y, color='g', linestyle='dashed', label="Weather Data")
 plt.plot(tR, color='#138D75', linestyle='solid', label="tR")
 plt.plot(tF, color='#2E86C1', linestyle='solid', label="tF")
@@ -124,10 +136,11 @@ plt.ylabel('tE')
 #plt.title('Interesting Graph\nCheck it out')
 plt.legend()
 
+''' Grid - ON. '''
 plt.minorticks_on()
 plt.grid(which='minor', color='#808B96', linestyle='-', linewidth=0.5)
 
-
+#cursor = Cursor(plt, horizOn=True, vertOn=True, useblit=True, color='red', linewidth=2)
 plt.show()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
