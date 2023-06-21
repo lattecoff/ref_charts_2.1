@@ -15,6 +15,8 @@ y_shift_heater = 2
 y_shift_sf = 10
 y_shift_df_vec = 30
 y_shift_df_tout = 6
+y_shift_tR_out = 20
+y_shift_tF_out = 20
 
 x = []
 y = []
@@ -104,7 +106,7 @@ def calc_sumtime_run_compressor():
 #with open('./logs/46new/r531_err_f2_delay_comp.log', 'r') as csvfile:
 #with open('./logs/46new/r532_common_mode_2.log', 'r') as csvfile:
 #with open('./logs/46new/r532_common_mode_3.log', 'r') as csvfile:
-with open('./logs/46new/r565_sf.log', 'r') as csvfile:
+with open('./logs/46new/r576_test_ref_off.log', 'r') as csvfile:
     lines = csv.reader(csvfile, delimiter=';')
     for row in lines:
         #x.append(row[0])
@@ -117,8 +119,8 @@ with open('./logs/46new/r565_sf.log', 'r') as csvfile:
         comp.append(int(row[7]) - y_shift_comp)
         heater.append(int(row[8]) - y_shift_heater)
         
-        tR_out.append(int(row[10]) *2)
-        tF_out.append(int(row[11]) *4)
+        tR_out.append(((int(row[10]) -1) *4) + y_shift_tR_out)
+        tF_out.append(((int(row[11]) -1) *4) + y_shift_tF_out)
 
         sf.append(int(row[12]) + y_shift_sf)
 
@@ -173,6 +175,8 @@ plt.plot(sf_runtime, color='#C39BD3', linestyle='solid', label="SF RunTime")
 
 
 #plt.xlabel('x')
+
+plt.subplots_adjust(top=0.981,   bottom=0.049,   left=0.042,   right=0.981,   hspace=0.2,   wspace=0.2)
 
 plt.ylabel('tR')
 plt.ylabel('tF')
